@@ -31,3 +31,31 @@ def get_user_info(user_id):
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
     return the_response
+
+    # Gets  all recipients of messages from DB
+    @codey.route('/messages/<recipient_id>', methods['GET'])
+    def get_messages_info(recipient_id):
+        cursor = db.get_db().cursor()
+        cursor.execute('select sender_id, recipient_id, content, sent_at, message_id from Messages where reciptient_id = '%s', recipient_id)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+    # Gets the messages from the DB
+    @codey.route('/messages', methods=['POST'])
+def get_users():
+    cursor = db.get_db().cursor()
+    cursor.execute('select sender_id, recipient_id, content, sent_at, message_id from Messages')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
