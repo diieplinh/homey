@@ -18,7 +18,7 @@ def get_customers():
         json_data.append(dict(zip(row_headers, row)))
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
-    the_response.mimetype = 'application/json'
+    # the_response.mimetype = 'application/json'
     return the_response
 
 # Get customer detail for customer with particular userID
@@ -30,8 +30,12 @@ def get_customer(userID):
     json_data = []
     theData = cursor.fetchall()
     for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
+        row_dict = dict(zip(row_headers, row))
+        for key, value in row_dict.items():
+            if isinstance(value, bytes):
+                row_dict[key] = value.decode('utf-8')
+        json_data.append(row_dict)
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
-    the_response.mimetype = 'application/json'
+    # the_response.mimetype = 'application/json'
     return the_response
