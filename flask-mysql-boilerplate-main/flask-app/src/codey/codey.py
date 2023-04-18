@@ -225,7 +225,7 @@ def post_tasks_info(task_id):
 
 # Posts the tasks from the DB
 @codey.route('/tasks/<task_id>', methods=['DELETE'])
-def post_tasks_info(task_id):
+def del_tasks_info(task_id):
     cursor = db.get_db().cursor()
     cursor.execute('select title, details, scheduled, created_by, event_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
