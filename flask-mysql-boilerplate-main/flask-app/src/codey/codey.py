@@ -8,7 +8,7 @@ codey = Blueprint('codey', __name__)
 @codey.route('/users', methods=['GET'])
 def get_users():
     cursor = db.get_db().cursor()
-    cursor.execute('select first_name, last_name from Users')
+    cursor.execute('select first_name, last_name, user_id from Users')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
