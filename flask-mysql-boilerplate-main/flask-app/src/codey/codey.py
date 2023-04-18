@@ -11,28 +11,32 @@ def get_users():
     cursor.execute('select first_name, last_name, user_id from Users')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
-theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-        the_response = make_response(jsonify(json_data))
-        the_response.status_code = 200
-        return the_response
-
-# Gets information for the given userID from DB
-@codey.route('/users/<user_id>', methods=['GET'])
-def get_user_info(user_id):
-    cursor = db.get_db().cursor()
-    cursor.execute('select first_name, last_name, user_id from Users where user_id = %s', user_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
     theData = cursor.fetchall()
     for row in theData:
         json_data.append(dict(zip(row_headers, row)))
-        the_response = make_response(jsonify(json_data))
-        the_response.status_code = 200
-        return the_response
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
 
-# Gets  all recipients of messages from DB
+# Gets information for the given userID from DB
+@codey.route('/users/<user_id>', methods=['GET', 'DEL'])
+def get_user_info(user_id):
+    cursor = db.get_db().cursor()
+    json_data = []
+    if request.method == 'GET' :
+        cursor.execute('select first_name, last_name, user_id from Users where user_id = %s', user_id)
+        row_headers = [x[0] for x in cursor.description]
+        theData = cursor.fetchall()
+        for row in theData:
+            json_data.append(dict(zip(row_headers, row)))
+    elif request.method == 'DEL':
+        cursor.execute('delete from Users where user_id = %s', user_id)
+        db.get_db().commit()
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+# Gets all recipients of messages from DB
 @codey.route('/messages/<recipient_id>', methods=['GET'])
 def get_messages_info(recipient_id):
     cursor = db.get_db().cursor()
@@ -129,4 +133,79 @@ def get_events_info(event_id):
         the_response = make_response(jsonify(json_data))
         the_response.status_code = 200
         return the_response
+    
+# Gets information for the given task from DB
+@codey.route('/tasks/<task_id>', methods=['GET'])
+def get_task_info(task_id):
+    cursor = db.get_db().cursor()
+    cursor.execute('select user_id, task_name, task_status, task_id from Tasks where task_id = %s', task_id)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+
+# Gets information for the given task category from DB
+@codey.route('/tasks/<category_id>', methods=['GET'])
+def get_task_category_info(task_id):
+    cursor = db.get_db().cursor()
+    cursor.execute('select tcategory_id, task_id from Tasks where task_id = %s', task_id)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+
+# Gets information for the given task category from DB
+@codey.route('/tasks/<assigned_to>', methods=['GET'])
+def get_task_assignee_info(task_id):
+    cursor = db.get_db().cursor()
+    cursor.execute('select user_id, task_id from Tasks where task_id = %s', task_id)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+
+# Gets all shopping categories from the DB
+@codey.route('/shopping_categories', methods=['GET'])
+def get_shopping_categories():
+    cursor = db.get_db().cursor()
+    cursor.execute('select scategory_name, shopping_id from Shopping_Categories')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+
+# Gets all tasks categories from the DB
+@codey.route('/tasks_categories', methods=['GET'])
+def get_shopping_categories():
+    cursor = db.get_db().cursor()
+    cursor.execute('select scategory_name, shopping_id from Shopping_Categories')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
 
