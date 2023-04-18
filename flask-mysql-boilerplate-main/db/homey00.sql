@@ -1,8 +1,27 @@
-CREATE TABLE IF NOT EXISTS Users(
-   first_name VARCHAR(50) NOT NULL,
-   last_name  VARCHAR(50) NOT NULL,
-   user_id  INTEGER  NOT NULL AUTO_INCREMENT PRIMARY KEY
+
+create database if not exists homey;
+
+use homey;
+
+drop table if exists EventAttendees;
+drop table if exists Events;
+drop table if exists Payments;
+drop table if exists Requests;
+drop table if exists PaymentCategories;
+drop table if exists ShoppingItems;
+drop table if exists ShoppingCategories;
+drop table if exists Tasks;
+drop table if exists TaskCategories;
+drop table if exists Messages;
+drop table if exists Users;
+
+
+create table if not exists Users (
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    user_id int auto_increment primary key
 );
+
 INSERT INTO Users(first_name,last_name, user_id) VALUES ('Katey','Menendes', 1);
 INSERT INTO Users(first_name,last_name, user_id) VALUES ('Bruis','Feehan', 2);
 INSERT INTO Users(first_name,last_name, user_id) VALUES ('Alvis','Terne', 3);
@@ -19,69 +38,70 @@ INSERT INTO Users(first_name,last_name, user_id) VALUES ('Florina','MacCrackan',
 INSERT INTO Users(first_name,last_name, user_id) VALUES ('Tomlin','Hendricks', 14);
 INSERT INTO Users(first_name,last_name, user_id) VALUES ('Ninetta','Fuentes', 15);
 
-CREATE TABLE IF NOT EXISTS Messages(
-   sender_id    INTEGER  NOT NULL PRIMARY KEY, 
-   recipient_id INTEGER  NOT NULL,
-   content      TEXT,
-   sent_at      DATETIME DEFAULT CURRENT _TIMESTAMP,
-   message_id   INTEGER AUTO_INCREMENT PRIMARY KEY
+create table if not exists Messages (
+    sender_id int not null,
+    recipient_id int not null,
+    content text,
+    sent_at datetime default current_timestamp,
+    message_id int auto_increment primary key,
 
     constraint foreign key (sender_id) references Users(user_id)
-        on delete restrict
+        on delete cascade
         on update cascade,
     constraint foreign key (recipient_id) references Users(user_id)
-        on delete restrict
+        on delete cascade
         on update cascade
 );
 
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (1,1,'Monitored needs-based approach','7:34',1);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (2,2,'Fundamental human-resource structure','11:23',2);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (3,3,'Down-sized disintermediate Graphic Interface','21:05',3);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (4,4,'Monitored attitude-oriented firmware','1:30',4);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (5,5,'Networked fresh-thinking migration','18:54',5);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (6,6,'Synergized transitional ability','0:42',6);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (7,7,'Robust discrete frame','11:25',7);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (8,8,'Cross-group multi-tasking open system','16:18',8);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (9,9,'Reduced discrete matrices','2:46',9);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (10,10,'Versatile foreground standardization','20:03',10);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (11,11,'Focused foreground budgetary management','17:00',11);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (12,12,'Object-based responsive array','7:03',12);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (13,13,'Seamless interactive infrastructure','19:17',13);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (14,14,'Realigned homogeneous Graphic Interface','22:43',14);
-INSERT INTO Messages(sender_id,recipient_id,content,sent_at,message_id) VALUES (15,15,'Enterprise-wide zero defect forecast','22:15',15);
+INSERT INTO Messages(sender_id,recipient_id,content) VALUES (2,1,'Fundamental human-resource structure');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (1,2,'Monitored needs-based approach','2022-07-01 07:34:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (3,5,'Down-sized disintermediate Graphic Interface','2019-11-11 21:05:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (5,4,'Monitored attitude-oriented firmware','2023-01-01 01:30:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (5,9,'Networked fresh-thinking migration','2023-03-02 18:54:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (9,5,'Synergized transitional ability','2023-04-08 00:42:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (7,7,'Robust discrete frame','2022-06-01 11:25:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (8,8,'Cross-group multi-tasking open system','2022-08-31 16:18:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (9,9,'Reduced discrete matrices','2019-12-25 02:46:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (10,10,'Versatile foreground standardization','2023-01-01 20:03:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (11,11,'Focused foreground budgetary management','2023-01-03 17:00:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (12,12,'Object-based responsive array','2023-2-18 07:03:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (13,13,'Seamless interactive infrastructure','2023-3-01 19:17:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (14,14,'Realigned homogeneous Graphic Interface','2023-03-15 22:43:00');
+INSERT INTO Messages(sender_id,recipient_id,content,sent_at) VALUES (15,15,'Enterprise-wide zero defect forecast','2023-04-01 22:15:00');
 
-CREATE TABLE IF NOT EXISTS TaskCategories(
-   category_name VARCHAR(50) NOT NULL UNIQUE, 
-   category_id INTEGER  AUTO_INCREMENT PRIMARY KEY 
+create table if not exists TaskCategories (
+    category_name varchar(50) not null unique,
+    category_id int auto_increment primary key
 );
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Proactive 5th generation installation', 1);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Integrated dedicated framework', 2);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Diverse system-worthy array', 3);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Team-oriented needs-based hub', 4);
-INSERT INTO TaskCategorie (category_name, category_id) VALUES ('Focused dedicated artificial intelligence', 5);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Intuitive mobile collaboration', 6);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Multi-tiered multi-state neural-net', 7);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Advanced static frame', 8);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Function-based client-driven customer loyalty', 9);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Face to face attitude-oriented conglomeration', 10);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Multi-channelled incremental solution', 11);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Open-architected analyzing info-mediaries', 12);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Switchable upward-trending database', 13);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Team-oriented high-level hierarchy', 14);
-INSERT INTO TaskCategories(category_name, category_id) VALUES ('Progressive 24 hour challenge', 15);
 
-CREATE TABLE IF NOT EXISTS Tasks(
-   title       VARCHAR(50) NOT NULL, 
-   details     VARCHAR(200),
-   category_id INTEGER,
-   task_status boolean NOT NULL, 
-   complete_by DATETIME, 
-   created_by  INTEGER  NOT NULL, 
-   assigned_to INTEGER, 
-   task_id INTEGER  AUTO_INCREMENT PRIMARY KEY, 
+INSERT INTO TaskCategories(category_name) VALUES ('Proactive 5th generation installation');
+INSERT INTO TaskCategories(category_name) VALUES ('Integrated dedicated framework');
+INSERT INTO TaskCategories(category_name) VALUES ('Diverse system-worthy array');
+INSERT INTO TaskCategories(category_name) VALUES ('Team-oriented needs-based hub');
+INSERT INTO TaskCategories(category_name) VALUES ('Focused dedicated artificial intelligence');
+INSERT INTO TaskCategories(category_name) VALUES ('Intuitive mobile collaboration');
+INSERT INTO TaskCategories(category_name) VALUES ('Multi-tiered multi-state neural-net');
+INSERT INTO TaskCategories(category_name) VALUES ('Advanced static frame');
+INSERT INTO TaskCategories(category_name) VALUES ('Function-based client-driven customer loyalty');
+INSERT INTO TaskCategories(category_name) VALUES ('Face to face attitude-oriented conglomeration');
+INSERT INTO TaskCategories(category_name) VALUES ('Multi-channelled incremental solution');
+INSERT INTO TaskCategories(category_name) VALUES ('Open-architected analyzing info-mediaries');
+INSERT INTO TaskCategories(category_name) VALUES ('Switchable upward-trending database');
+INSERT INTO TaskCategories(category_name) VALUES ('Team-oriented high-level hierarchy');
+INSERT INTO TaskCategories(category_name) VALUES ('Progressive 24 hour challenge');
+
+create table if not exists Tasks (
+    title varchar(50) not null,
+    details varchar(200),
+    category_id int,
+    task_status bool not null,
+    complete_by datetime,
+    created_by int not null,
+    assigned_to int,
+    task_id int auto_increment primary key,
 
     constraint foreign key (created_by) references Users(user_id)
-        on delete restrict
+        on delete cascade
         on update cascade,
     constraint foreign key (category_id) references TaskCategories(category_id)
         on delete set null
@@ -91,50 +111,51 @@ CREATE TABLE IF NOT EXISTS Tasks(
         on update cascade
 );
 
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Runolfsdottir-Hettinger','Adaptive value-added moderator',1,'true','6/17/2023',1,2,1);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Metz, Hyatt and Beatty','Compatible needs-based access',2,'false','6/2/2023',2,1,2);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Zieme-Corkery','Cross-group leading edge conglomeration',3,'false','5/16/2023',3,1,3);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Farrell, Williamson and O''Connell','Enterprise-wide heuristic migration',4,'false','6/18/2023',4,1,4);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Macejkovic-Rippin','Sharable well-modulated flexibility',5,'true','4/24/2023',5,4,5);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Turcotte-Sawayn','Function-based modular capability',6,'true','4/28/2023',6,3,6);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Brakus, Graham and West','Decentralized scalable toolset',7,'true','6/6/2023',7,5,7);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Zboncak-Durgan','Optimized leading edge model',8,'true','4/21/2023',8,11,8);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Hyatt Inc','Up-sized zero defect matrices',9,'true','7/10/2023',9,4,9);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('McLaughlin-Johnson','Inverse coherent product',10,'false','5/29/2023',10,15,10);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Smitham-Connelly','Future-proofed clear-thinking concept',11,'false','6/25/2023',11,13,11);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Trantow-Becker','Synchronised clear-thinking moratorium',12,'true','7/9/2023',12,1,12);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('MacGyver, Grady and Legros','Implemented tertiary alliance',13,'false','6/2/2023',13,13,13);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Prosacco-Wunsch','Ergonomic intangible Graphical User Interface',14,'false','4/23/2023',14,4,14);
-INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to,task_id) VALUES ('Goyette, Hansen and Predovic','Polarised human-resource firmware',15,'true','7/10/2023',15,6,15);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Runolfsdottir-Hettinger','Adaptive value-added moderator',1,1,'2023-05-22 00:00:00',1,2);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Metz, Hyatt and Beatty','Compatible needs-based access',2,0,'2023-05-23 00:00:00',2,1);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Zieme-Corkery','Cross-group leading edge conglomeration',2,0,'2023-05-24 00:00:00',3,1);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Farrell, Williamson and O''Connell','Enterprise-wide heuristic migration',4,0,null,4,1);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Macejkovic-Rippin','Sharable well-modulated flexibility',5,1,'2023-05-12 00:00:00',5,4);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Turcotte-Sawayn','Function-based modular capability',6,1,null,6,3);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Brakus, Graham and West','Decentralized scalable toolset',10,1,'2023-05-02 00:00:00',7,5);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Zboncak-Durgan','Optimized leading edge model',10,1,'2023-05-20 00:00:00',8,11);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Hyatt Inc','Up-sized zero defect matrices',9,1,'2023-05-22 00:00:00',9,4);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('McLaughlin-Johnson','Inverse coherent product',10,0,'2023-05-28 00:00:00',10,15);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Smitham-Connelly','Future-proofed clear-thinking concept',11,0,'2023-04-22 00:00:00',11,13);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Trantow-Becker','Synchronised clear-thinking moratorium',12,1,'2023-04-02 00:00:00',12,1);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('MacGyver, Grady and Legros','Implemented tertiary alliance',11,0,'2023-04-12 00:00:00',13,13);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Prosacco-Wunsch','Ergonomic intangible Graphical User Interface',14,0,'2023-04-13 00:00:00',14,4);
+INSERT INTO Tasks(title,details,category_id,task_status,complete_by,created_by,assigned_to) VALUES ('Goyette, Hansen and Predovic','Polarised human-resource firmware',15,1,'2023-05-22 00:00:00',15,6);
 
-CREATE TABLE IF NOT EXISTS ShoppingCategories (
-   category_name VARCHAR(50) NOT NULL UNIQUE, 
-   category_id  INTEGER  AUTO_INCREMENT  PRIMARY KEY,  
+
+create table if not exists ShoppingCategories (
+    category_name varchar(50) not null unique,
+    category_id int auto_increment primary key
 );
 
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Ziemann Group', 1);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Stokes, Sawayn and Gorczany', 2);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Schmitt LLC', 3);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Cole, Schumm and Pacocha', 4);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Gerhold, Torp and Howell', 5);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Simonis and Sons', 6);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Carter Inc', 7);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Monahan and Sons', 8);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Kub-Gutkowski', 9);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Rolfson-Smith', 10);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Vandervort, Mueller and Bartoletti', 11);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Watsica and Sons', 12);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Rodriguez-Rogahn', 13);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('Schmitt, Hickle and Zemlak', 14);
-INSERT INTO ShoppingCategories(category_name, category_id) VALUES ('VonRueden, Borer and Stoltenberg', 15);
+INSERT INTO ShoppingCategories(category_name) VALUES ('Ziemann Group');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Stokes, Sawayn and Gorczany');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Schmitt LLC');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Cole, Schumm and Pacocha');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Gerhold, Torp and Howell');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Simonis and Sons');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Carter Inc');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Monahan and Sons');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Kub-Gutkowski');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Rolfson-Smith');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Vandervort, Mueller and Bartoletti');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Watsica and Sons');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Rodriguez-Rogahn');
+INSERT INTO ShoppingCategories(category_name) VALUES ('Schmitt, Hickle and Zemlak');
+INSERT INTO ShoppingCategories(category_name) VALUES ('VonRueden, Borer and Stoltenberg');
 
-CREATE TABLE IF NOT EXISTS ShoppingItems(
-   item_name   VARCHAR(50) NOT NULL, 
-   quantity    INTEGER,
-   details     VARCHAR(200), 
-   category_id INTEGER, 
-   assigned_to INTEGER, 
-   item_id     INTEGER AUTO_INCREMENT PRIMARY KEY,
+create table if not exists ShoppingItems (
+    item_name varchar(50) not null,
+    quantity int,
+    details varchar(200),
+    category_id int,
+    assigned_to int,
+    item_id int auto_increment primary key,
 
     constraint foreign key (category_id) references ShoppingCategories(category_id)
         on delete set null
@@ -143,50 +164,52 @@ CREATE TABLE IF NOT EXISTS ShoppingItems(
         on delete set null
         on update cascade
 );
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Muffin Puck Ww Carrot',1,'Down-sized systemic moderator',1,1,1);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Chicken Giblets',2,'Assimilated responsive neural-net',2,2,2);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Appetizer - Mini Egg Roll, Shrimp',3,'Versatile composite extranet',3,3,3);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Shrimp - 31/40',4,'Devolved grid-enabled orchestration',4,4,4);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Bread - Rolls, Rye',5,'Operative actuating benchmark',5,5,5);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Baking Soda',6,'Decentralized client-driven projection',6,6,6);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Pepper Squash',7,'Future-proofed reciprocal data-warehouse',7,7,7);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Cake - Night And Day Choclate',8,'Mandatory exuding methodology',8,8,8);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Bouillion - Fish',9,'Ergonomic 4th generation projection',9,9,9);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Pike - Frozen Fillet',10,'Optional static utilisation',10,10,10);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Gatorade - Fruit Punch',11,'Decentralized discrete database',11,11,11);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Towel - Roll White',12,'Function-based fresh-thinking methodology',12,12,12);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Longos - Chicken Cordon Bleu',13,'Cross-group impactful artificial intelligence',13,13,13);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Salmon - Atlantic, Fresh, Whole',14,'Self-enabling homogeneous synergy',14,14,14);
-INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to,item_id) VALUES ('Calaloo',15,'Reduced explicit benchmark',15,15,15);
 
-CREATE TABLE IF NOT EXISTS PaymentCategories(
-   category_name VARCHAR(50) NOT NULL UNIQUE, 
-   category_id   INTEGER  AUTO_INCREMENAT NOT NULL PRIMARY KEY
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Muffin Puck Ww Carrot',3,null,2,1);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Chicken Giblets',20,'Assimilated responsive neural-net',2,1);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Appetizer - Mini Egg Roll, Shrimp',3,'Versatile composite extranet',2,1);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Shrimp - 31/40',1,'Devolved grid-enabled orchestration',4,1);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Bread - Rolls, Rye',2,null,1,5);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Baking Soda',1,'Decentralized client-driven projection',4,6);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Pepper Squash',3,'Future-proofed reciprocal data-warehouse',11,6);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Cake - Night And Day Choclate',1,'Mandatory exuding methodology',8,null);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Bouillion - Fish',null,'Ergonomic 4th generation projection',9,null);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Pike - Frozen Fillet',2,'Optional static utilisation',12,null);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Gatorade - Fruit Punch',2,'Decentralized discrete database',11,null);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Towel - Roll White',6,null,12,null);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Longos - Chicken Cordon Bleu',1,'Cross-group impactful artificial intelligence',13,13);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Salmon - Atlantic, Fresh, Whole',3,'Self-enabling homogeneous synergy',14,14);
+INSERT INTO ShoppingItems(item_name,quantity,details,category_id,assigned_to) VALUES ('Calaloo',null,'Reduced explicit benchmark',15,15);
+
+create table if not exists PaymentCategories (
+    category_name varchar(50) not null unique,
+    category_id int auto_increment primary key
 );
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Harvest', 1);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Letters to Juliet', 2);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('$9.99', 3);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('King''s Faith', 4);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('99 francs', 5);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Family Honeymoon', 6);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Bratz: The Movie', 7);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('The Fat Spy', 8);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Monkey''s Paw, The', 9);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Filming ''Othello''', 10);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Myriad of Lights (Lights of Ten Thousand Homes, The) (Wanjia denghuo)', 11);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Gitmek: My Marlon and Brando (Gitmek: Benim Marlon ve Brandom)' 12);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Rumble in Hong Kong (Nu jing cha) (Heroine, The)', 13);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('French Fried Vacation 3 (Les bronzés 3: amis pour la vie)', 14);
-INSERT INTO PaymentCategories(category_name, category_id) VALUES ('Fled', 15);
 
-CREATE TABLE IF NOT EXISTS Requests(
-   requested_by   INTEGER, 
-   requested_from INTEGER, 
-   amount         DOUBLE  NOT NULL CHECK (AMOUNT > 0), 
-   details        VARCHAR(50),
-   category_id    INTEGER,
-   requested_at   DATETIME DEFAULT CURRENT_TIMESTAMP, 
-   request_id     INTEGER  AUTO_INCREMENAT PRIMARY KEY,
+INSERT INTO PaymentCategories(category_name) VALUES ('Harvest');
+INSERT INTO PaymentCategories(category_name) VALUES ('Letters to Juliet');
+INSERT INTO PaymentCategories(category_name) VALUES ('$9.99');
+INSERT INTO PaymentCategories(category_name) VALUES ('Kings Faith');
+INSERT INTO PaymentCategories(category_name) VALUES ('99 francs');
+INSERT INTO PaymentCategories(category_name) VALUES ('Family Honeymoon');
+INSERT INTO PaymentCategories(category_name) VALUES ('Bratz: The Movie');
+INSERT INTO PaymentCategories(category_name) VALUES ('The Fat Spy');
+INSERT INTO PaymentCategories(category_name) VALUES ('Monkeys Paw, The');
+INSERT INTO PaymentCategories(category_name) VALUES ('Filming');
+INSERT INTO PaymentCategories(category_name) VALUES ('Myriad of Lights');
+INSERT INTO PaymentCategories(category_name) VALUES ('Gitmek: My Marlon and Brando');
+INSERT INTO PaymentCategories(category_name) VALUES ('Rumble in Hong Kong');
+INSERT INTO PaymentCategories(category_name) VALUES ('French Fried Vacation 3');
+INSERT INTO PaymentCategories(category_name) VALUES ('Fled');
+
+create table if not exists Requests (
+    requested_by int,
+    requested_from int,
+    amount double not null check (amount > 0),
+    details varchar(50),
+    category_id int,
+    requested_at datetime default current_timestamp,
+    request_id int auto_increment primary key,
 
     constraint foreign key (requested_by) references Users(user_id)
         on delete cascade
@@ -198,86 +221,110 @@ CREATE TABLE IF NOT EXISTS Requests(
         on delete set null
         on update cascade
 );
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (1,2,1,'Digitized attitude-oriented complexity',1,'2023-07-22 12:08:58',1);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (2,1,0,'Profit-focused transitional leverage',2,'2023-08-08 21:55:44',2);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (3,1,1,'Vision-oriented multi-tasking middleware',3,'2023-05-01 15:20:08',3);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (4,14,1,'Customer-focused actuating neural-net',4,'2023-08-19 04:07:16',4);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (5,6,1,'Multi-channelled stable artificial intelligence',5,'2023-04-04 20:14:01',5);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (6,6,1,'Proactive composite emulation',6,'2023-04-04 01:13:48',6);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (7,11,1,'Optimized optimizing solution',7,'2023-08-18 08:50:17',7);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (8,11,0,'Expanded bifurcated leverage',8,'2023-04-10 05:01:34',8);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (9,2,1,'Digitized background migration',9,'2023-05-31 06:58:53',9);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (10,4,1,'Robust disintermediate contingency',10,'2023-04-01 12:30:47',10);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (11,10,1,'Polarised responsive open system',11,'2023-04-19 13:25:03',11);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (12,9,0,'Secured real-time alliance',12,'2023-07-26 00:37:35',12);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (13,13,0,'Advanced static parallelism',13,'2023-08-15 08:02:25',13);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (14,6,0,'Distributed multimedia emulation',14,'2023-04-02 14:25:17',14);
-INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at,request_id) VALUES (15,5,1,'Front-line optimizing knowledge base',15,'2023-08-28 00:23:04',15);
 
-CREATE TABLE IF NOT EXISTS Payments(
-   fulfilled_on DATE DEFAULT CURRENT_TIMESTAMP, 
-   request_id   INTEGER  NOT NULL, 
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (1,2,10.44,'Digitized attitude-oriented complexity',1,'2023-03-22 12:08:58');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (2,1,4.33,'Profit-focused transitional leverage',3,'2023-03-08 21:55:44');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (3,1,7.55,'Vision-oriented multi-tasking middleware',3,'2023-01-01 15:20:08');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (4,14,10.4,'Customer-focused actuating neural-net',4,'2023-03-19 04:07:16');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (5,6,30.44,'Multi-channelled stable artificial intelligence',5,'2023-03-04 20:14:01');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (6,9,10.00,'Proactive composite emulation',6,'2023-03-04 01:13:48');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (7,11,19.00,'Optimized optimizing solution',7,'2023-02-18 08:50:17');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (8,11,0.50,'Expanded bifurcated leverage',1,'2023-01-10 05:01:34');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (9,2,1.90,'Digitized background migration',1,'2023-03-31 06:58:53');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (10,4,119.20,'Robust disintermediate contingency',9,'2023-01-01 12:30:47');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (11,10,20.00,'Polarised responsive open system',11,'2023-03-19 13:25:03');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (12,9,12.00,'Secured real-time alliance',1,'2023-01-26 00:37:35');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (13,10,0.85,'Advanced static parallelism',2,'2023-01-15 08:02:25');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (14,6,40.50,'Distributed multimedia emulation',15,'2023-03-02 14:25:17');
+INSERT INTO Requests(requested_by,requested_from,amount,details,category_id,requested_at) VALUES (15,5,111.33,'Front-line optimizing knowledge base',15,'2023-02-28 00:23:04');
+
+create table if not exists Payments (
+    fulfilled_on datetime default current_timestamp,
+    request_id int not null,
 
     constraint foreign key (request_id) references Requests(request_id)
         on delete cascade
         on update cascade
 );
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('4/8/2022',1);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('5/13/2023',2);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('6/6/2022',3);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('5/25/2023',4);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('5/2/2022',5);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('5/2/2022',6);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('5/15/2023',7);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('6/22/2022',8);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('7/16/2022',9);
-INSERT INTO Payments(fulfilled_on,request_id) VALUES ('4/8/2023',10);
 
-CREATE TABLE IF NOT EXISTS Events(
-   title      VARCHAR(50) NOT NULL, 
-   details    VARCHAR(200), 
-   scheduled  DATETIME  NOT NULL, 
-   created_by INTEGER  NOT NULL, 
-   event_id   INTEGER  AUTO_INCREMENT PRIMARY KEY, 
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-01 12:08:58',1);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-02 12:08:58',2);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-03 12:08:58',3);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-04 12:08:58',4);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-05 12:08:58',5);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-06 12:08:58',6);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-07 12:08:58',7);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-08 12:08:58',8);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-09 12:08:58',9);
+INSERT INTO Payments(fulfilled_on,request_id) VALUES ('2023-04-13 12:08:58',10);
+
+create table if not exists Events (
+    title varchar(50) not null,
+    details varchar(200),
+    scheduled datetime not null,
+    created_by int not null,
+    event_id int auto_increment primary key,
 
     constraint foreign key (created_by) references Users(user_id)
         on delete cascade
         on update cascade
 );
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Photospace','Versatile coherent function','3/4/2023',1,1);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Browseblab','Intuitive dedicated capability','10/13/2023',2,2);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Edgetag','Focused hybrid knowledge base','8/5/2022',3,3);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Quatz','Secured coherent model','7/13/2023',4,4);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Pixonyx','Ameliorated asymmetric collaboration','2/23/2023',5,5);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Tagchat','Exclusive motivating implementation','12/8/2022',6,6);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Photobug','Focused logistical portal','7/27/2023',7,7);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Youspan','Assimilated transitional core','4/28/2022',8,8);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Tagchat','Customer-focused heuristic middleware','3/12/2023',9,9);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Kwinu','Cross-group zero defect data-warehouse','5/4/2022',11,10);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Buzzshare','Ameliorated secondary utilisation','11/5/2023',11,11);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Yambee','Switchable high-level groupware','6/17/2022',12,12);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Tazz','Balanced cohesive encryption','8/27/2023',13,13);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Dabshots','Customizable heuristic system engine','1/3/2023',14,14);
-INSERT INTO Events(title,details,scheduled,created_by,event_id) VALUES ('Linkbuzz','De-engineered fault-tolerant system engine','9/22/2023',15,15);
 
-CREATE TABLE IF NOT EXISTS EventAttendees(
-   user_id  INTEGER  NOT NULL, 
-   event_id INTEGER  NOT NULL
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Photospace','Versatile coherent function','2023-04-01 12:08:58',1);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Browseblab','Intuitive dedicated capability','2023-04-04 12:08:58',2);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Edgetag','Focused hybrid knowledge base','2023-04-06 12:08:58',2);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Quatz','Secured coherent model','2023-05-01 12:08:58',2);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Pixonyx','Ameliorated asymmetric collaboration','2023-04-21 12:08:58',6);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Tagchat','Exclusive motivating implementation','2023-04-25 12:08:58',6);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Photobug','Focused logistical portal','2023-07-01 12:08:58',1);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Youspan','Assimilated transitional core','2023-06-01 12:08:58',2);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Tagchat','Customer-focused heuristic middleware','2023-12-01 12:08:58',3);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Kwinu','Cross-group zero defect data-warehouse','2023-06-01 12:08:58',11);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Buzzshare','Ameliorated secondary utilisation','2023-05-11 12:08:58',11);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Yambee','Switchable high-level groupware','2023-07-17 12:08:58',11);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Tazz','Balanced cohesive encryption','2023-05-01 12:08:58',13);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Dabshots','Customizable heuristic system engine','2023-03-01 12:08:58',14);
+INSERT INTO Events(title,details,scheduled,created_by) VALUES ('Linkbuzz','De-engineered fault-tolerant system engine','2023-04-01 12:08:58',15);
+
+create table if not exists EventAttendees (
+    user_id int not null,
+    event_id int not null,
+
+    constraint foreign key (user_id) references Users(user_id)
+        on delete cascade
+        on update cascade,
+    constraint foreign key (event_id) references Events(event_id)
+        on delete cascade
+        on update cascade
 );
+
 INSERT INTO EventAttendees(user_id,event_id) VALUES (1,1);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (2,1);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (3,2);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (4,1);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (5,2);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (6,3);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (7,4);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (3,1);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (11,1);
 INSERT INTO EventAttendees(user_id,event_id) VALUES (8,1);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (9,6);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (10,6);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (11,6);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (12,1);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (13,2);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (14,5);
-INSERT INTO EventAttendees(user_id,event_id) VALUES (15,5);
 
+INSERT INTO EventAttendees(user_id,event_id) VALUES (2,2);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (3,2);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (4,2);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (5,2);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (6,2);
 
+INSERT INTO EventAttendees(user_id,event_id) VALUES (2,3);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (4,3);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (5,3);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (6,3);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (12,3);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (15,3);
+
+INSERT INTO EventAttendees(user_id,event_id) VALUES (2,4);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (6,5);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (6,6);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (1,7);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (2,8);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (3,9);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (11,10);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (11,11);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (11,12);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (13,13);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (14,14);
+INSERT INTO EventAttendees(user_id,event_id) VALUES (15,15);
