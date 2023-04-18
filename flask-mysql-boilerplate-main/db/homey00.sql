@@ -1,3 +1,7 @@
+
+create database homey;
+use homey;
+
 CREATE TABLE IF NOT EXISTS Users(
    first_name VARCHAR(50) NOT NULL,
    last_name  VARCHAR(50) NOT NULL,
@@ -23,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Messages(
    sender_id    INTEGER  NOT NULL PRIMARY KEY, 
    recipient_id INTEGER  NOT NULL,
    content      TEXT,
-   sent_at      DATETIME DEFAULT CURRENT _TIMESTAMP,
+   sent_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
    message_id   INTEGER AUTO_INCREMENT PRIMARY KEY
 
     constraint foreign key (sender_id) references Users(user_id)
