@@ -167,7 +167,7 @@ def del_events_info(event_id):
 @codey.route('/tasks', methods=['GET'])
 def get_tasks_info():
     cursor = db.get_db().cursor()
-    cursor.execute('select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
+    cursor.execute('select first_name, last_name, assigned_to, complete_by, title, details, task_status, task_id from Tasks Join Users on Tasks.assigned_to = Users.user_id')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
