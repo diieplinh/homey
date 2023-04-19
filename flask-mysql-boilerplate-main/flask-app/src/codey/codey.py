@@ -171,7 +171,7 @@ def del_events_info(event_id):
 def get_tasks_info():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
+        'select first_name, last_name, assigned_to, complete_by, title, details, task_status, task_id from Tasks Join Users on Tasks.assigned_to = Users.user_id')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -252,7 +252,7 @@ def get_task_categories():
 def add_task_category():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s', task_id)
+        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
