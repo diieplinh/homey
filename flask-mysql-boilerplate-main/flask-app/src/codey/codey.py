@@ -65,7 +65,7 @@ def add_user():
 @codey.route('/messages/<recipient_id>', methods=['GET'])
 def get_messages_info(recipient_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select sender_id, recipient_id, content, sent_at, message_id from Messages where reciptient_id = %s', recipient_id)
+    cursor.execute('select sender_id, recipient_id, content, sent_at, message_id from Messages where recipient_id = %s', recipient_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -239,7 +239,7 @@ def get_task_assignee_info(task_id):
 @codey.route('/shopping_categories', methods=['GET'])
 def get_shopping_categories():
     cursor = db.get_db().cursor()
-    cursor.execute('select category_name from Shopping_Categories')
+    cursor.execute('select category_name from ShoppingCategories')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -251,10 +251,10 @@ def get_shopping_categories():
 
 
 # Gets all tasks categories from the DB
-@codey.route('/tasks_categories', methods=['GET'])
+@codey.route('/task_categories', methods=['GET'])
 def get_task_categories():
     cursor = db.get_db().cursor()
-    cursor.execute('select category_name from Task_Categories')
+    cursor.execute('select category_name from TaskCategories')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
