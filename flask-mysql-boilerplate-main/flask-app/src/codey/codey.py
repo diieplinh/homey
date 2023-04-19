@@ -103,6 +103,8 @@ def get_events():
         the_response.status_code = 200
         return the_response
 
+
+
 # Gets the event_id from the DB
 @codey.route('/events/<event_id>', methods=['GET'])
 def get_events_info(event_id):
@@ -159,11 +161,40 @@ def del_events_info(event_id):
         the_response.status_code = 200
         return the_response
     
+
+
+# Gets information for all tasks from DB
+@codey.route('/tasks', methods=['GET'])
+def get_tasks_info():
+    cursor = db.get_db().cursor()
+    cursor.execute('select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
+@codey.route('/tables', methods = ['GET'])
+def get_tables():
+    cursor = db.get_db().cursor()
+    cursor.execute('show tables')
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    return the_response
+
 # Gets information for the given task from DB
 @codey.route('/tasks/<task_id>', methods=['GET'])
 def get_task_info(task_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select user_id, task_name, task_status, task_id from Tasks where task_id = %s', task_id)
+    cursor.execute('select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -178,7 +209,7 @@ def get_task_info(task_id):
 @codey.route('/tasks/<category_id>', methods=['GET'])
 def get_task_category_info(task_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select tcategory_id, task_id from Tasks where task_id = %s', task_id)
+    cursor.execute('select category_id, task_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -193,7 +224,7 @@ def get_task_category_info(task_id):
 @codey.route('/tasks/<assigned_to>', methods=['GET'])
 def get_task_assignee_info(task_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select user_id, task_id from Tasks where task_id = %s', task_id)
+    cursor.execute('select assigned_to, task_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -208,7 +239,7 @@ def get_task_assignee_info(task_id):
 @codey.route('/shopping_categories', methods=['GET'])
 def get_shopping_categories():
     cursor = db.get_db().cursor()
-    cursor.execute('select scategory_name, shopping_id from Shopping_Categories')
+    cursor.execute('select category_name from Shopping_Categories')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -223,7 +254,7 @@ def get_shopping_categories():
 @codey.route('/tasks_categories', methods=['GET'])
 def get_task_categories():
     cursor = db.get_db().cursor()
-    cursor.execute('select tcategory_name, task_id from Task_Categories')
+    cursor.execute('select category_name from Task_Categories')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -237,7 +268,7 @@ def get_task_categories():
 @codey.route('/tasks/<task_id>', methods=['POST'])
 def post_tasks_info(task_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select title, details, scheduled, created_by, event_id from Tasks where task_id = %s', task_id)
+    cursor.execute('select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -252,7 +283,7 @@ def post_tasks_info(task_id):
 @codey.route('/tasks/<task_id>', methods=['DELETE'])
 def del_tasks_info(task_id):
     cursor = db.get_db().cursor()
-    cursor.execute('select title, details, scheduled, created_by, event_id from Tasks where task_id = %s', task_id)
+    cursor.execute('select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s', task_id)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
