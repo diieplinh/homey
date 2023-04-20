@@ -65,7 +65,6 @@ def add_user():
         first + '", "' + last + '")'
 
     return post_request_db(query)
-    
 
 # Gets information for the given userID from DB
 @codey.route('/users/<user_id>', methods=['GET'])
@@ -96,119 +95,74 @@ def edit_user(user_id):
 # Gets all messages from the DB
 @codey.route('/messages', methods=['GET'])
 def get_messages():
-    cursor = db.get_db().cursor()
-    cursor.execute('select first_name, last_name, user_id from Users')
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query = 'select first_name, last_name, user_id from Users'
+    return get_request_db(query)
 
 # Gets the all messages sent to a user
 @codey.route('/messages/<recipient_id>', methods=['GET'])
 def get_messages_received_by(recipient_id):
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'select sender_id, recipient_id, content, sent_at, message_id from Messages where recipient_id = %s', recipient_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query = 'select sender_id, recipient_id, content, sent_at, message_id from Messages where recipient_id = %s' % recipient_id
+    return get_request_db(query)
 
 # Gets the all messages sent between two users
 @codey.route('/messages/<user1>/<user2>', methods=['GET'])
 def get_messages_between(user1, user2):
-    cursor = db.get_db().cursor()
-    select_stmt = 'select sender_id, recipient_id, content, sent_at, message_id '
-    select_stmt += 'from Messages '
-    select_stmt += 'where (sender_id = "' + user1 + \
+    query = 'select sender_id, recipient_id, content, sent_at, message_id '
+    query += 'from Messages '
+    query += 'where (sender_id = "' + user1 + \
         '" && recipient_id = "' + user2 + '") '
-    select_stmt += '|| (sender_id = "' + user2 + \
+    query += '|| (sender_id = "' + user2 + \
         '" && recipient_id = "' + user1 + '") '
-    select_stmt += 'order by sent_at asc;'
-    cursor.execute(select_stmt)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query += 'order by sent_at asc;'
+    
+    return get_request_db(query)
 
 # Events Routes
 
-# Gets the events from the DB
+# Gets all events from the DB
 @codey.route('/events', methods=['GET'])
 def get_events():
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'select title, details, scheduled, created_by, event_id from Events')
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query = 'select title, details, scheduled, created_by, event_id from Events'
+    return get_request_db(query)
 
-# Gets the event_id from the DB
+# Adds a new event to the DB
+@codey.route('/events', methods=['POST'])
+def add_event():
+    req_data = request.get_json()
+    title = req_data['title']
+    details = req_data['details']
+    scheduled = req_data['scheduled']
+    created_by = req_data['created_by']
+
+    query = 'insert into Events (title, details, scheduled, created_by) values ' + \
+       '("%s", "%s", "%s", "%s")' % (title, details, scheduled, created_by)
+
+    return post_request_db(query)
+
+# Gets info for a given event from the DB
 @codey.route('/events/<event_id>', methods=['GET'])
 def get_events_info(event_id):
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'select title, details, scheduled, created_by, event_id from Events where event_id = %s', event_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query = 'select title, details, scheduled, created_by, event_id from Events where event_id = %s' % event_id
 
-# Posts the event from the DB
-@codey.route('/events/<event_id>', methods=['POST'])
-def post_events_info(event_id):
-    return  # todo
+    return get_request_db(query)
 
-# Put the event in the DB
+# Update the given event in the DB
 @codey.route('/events/<event_id>', methods=['PUT'])
-def put_events_info(event_id):
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'select title, details, scheduled, created_by, event_id from Events where event_id = %s', event_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+def update_event(event_id):
+    req_data = request.get_json()
+    title = req_data['title']
+    details = req_data['details']
+    scheduled = req_data['scheduled']
+    query = 'update Events set title = "%s", details = "%s", scheduled = "%s" where event_id = "%s"' % (title, details, scheduled, event_id)
+    
+    return put_request_db(query)
 
 # Delete the event from the DB
 @codey.route('/events/<event_id>', methods=['DELETE'])
 def del_events_info(event_id):
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'select title, details, scheduled, created_by, event_id from Events where event_id = %s', event_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+    query = 'delete from Events where event_id = %s' % event_id
+    
+    return del_request_db(query)
 
 ### Tasks Routes
 
@@ -217,7 +171,7 @@ def del_events_info(event_id):
 def get_tasks_info():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
+        'select first_name, last_name, assigned_to, complete_by, title, details, task_status, task_id from Tasks Join Users on Tasks.assigned_to = Users.user_id')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -298,7 +252,7 @@ def get_task_categories():
 def add_task_category():
     cursor = db.get_db().cursor()
     cursor.execute(
-        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s', task_id)
+        'select assigned_to, complete_by, title, details, task_status, task_id from Tasks')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -321,73 +275,3 @@ def get_shopping_categories():
     the_response = make_response(jsonify(json_data))
     the_response.status_code = 200
     return the_response
-
-# # Gets all shopping items from the DB
-# @codey.route('/shopping_items', methods=['GET'])
-# def get_shopping_items():
-#     cursor = db.get_db().cursor()
-#     cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingItems')
-#     row_headers = [x[0] for x in cursor.description]
-#     json_data = []
-#     theData = cursor.fetchall()
-#     for row in theData:
-#         json_data.append(dict(zip(row_headers, row)))
-#     the_response = make_response(jsonify(json_data))
-#     the_response.status_code = 200
-#     return the_response
-
-# # Posts all shopping items from the DB
-# @codey.route('/shopping_items', methods=['POST'])
-# def post_shopping_items():
-#     cursor = db.get_db().cursor()
-#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
-#     row_headers = [x[0] for x in cursor.description]
-#     json_data = []
-#     theData = cursor.fetchall()
-#     for row in theData:
-#         json_data.append(dict(zip(row_headers, row)))
-#     the_response = make_response(jsonify(json_data))
-#     the_response.status_code = 200
-#     return the_response
-
-# # Puts all shopping items from the DB
-# @codey.route('/shopping_items', methods=['PUT'])
-# def put_shopping_items():
-#     cursor = db.get_db().cursor()
-#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
-#     row_headers = [x[0] for x in cursor.description]
-#     json_data = []
-#     theData = cursor.fetchall()
-#     for row in theData:
-#         json_data.append(dict(zip(row_headers, row)))
-#     the_response = make_response(jsonify(json_data))
-#     the_response.status_code = 200
-#     return the_response
-
-# # Deletes all shopping items from the DB
-# @codey.route('/shopping_items', methods=['DELETE'])
-# def delete_shopping_items():
-#     cursor = db.get_db().cursor()
-#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
-#     row_headers = [x[0] for x in cursor.description]
-#     json_data = []
-#     theData = cursor.fetchall()
-#     for row in theData:
-#         json_data.append(dict(zip(row_headers, row)))
-#     the_response = make_response(jsonify(json_data))
-#     the_response.status_code = 200
-#     return the_response
-
-# # Gets all shopping items, assigned_to, from the DB
-# @codey.route('/shopping_items/<assigned_to>', methods=['GET'])
-# def get_shopping_items_info():
-#     cursor = db.get_db().cursor()
-#     cursor.execute('select assigned_to from ShoppingItems where assigned_to = %s', assigned_to)
-#     row_headers = [x[0] for x in cursor.description]
-#     json_data = []
-#     theData = cursor.fetchall()
-#     for row in theData:
-#         json_data.append(dict(zip(row_headers, row)))
-#     the_response = make_response(jsonify(json_data))
-#     the_response.status_code = 200
-#     return the_response
