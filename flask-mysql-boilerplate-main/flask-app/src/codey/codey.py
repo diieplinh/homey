@@ -95,7 +95,7 @@ def edit_user(user_id):
 # Gets all messages from the DB
 @codey.route('/messages', methods=['GET'])
 def get_messages():
-    query = 'select first_name, last_name, user_id from Users'
+    query = 'select * from Messages'
     return get_request_db(query)
 
 # Gets the all messages sent to a user
@@ -169,7 +169,7 @@ def del_events_info(event_id):
 # Gets information for all tasks from DB
 @codey.route('/tasks', methods=['GET'])
 def get_tasks_info():
-    query = 'select first_name, last_name, assigned_to, complete_by, title, details, task_status, task_id from Tasks Join Users on Tasks.assigned_to = Users.user_id'
+    query = 'select first_name, last_name, assigned_to, category_id, complete_by, title, details, task_status, task_id, created_by from Tasks Join Users on Tasks.assigned_to = Users.user_id'
     return get_request_db(query)
 
 # Creates a new task
@@ -205,7 +205,18 @@ def get_task_assignee_info(task_id):
 # Updates a task 
 @codey.route('/tasks/<task_id>', methods=['PUT'])
 def update_task(task_id):
-    return
+    req_data = request.get_json()
+    assigned_to = req_data['assigned_to']
+    title = req_data['title']
+    details = req_data['details']
+    task_status = req_data['task_status']
+    complete_by = req_data['complete_by']
+    created_by = req_data['created_by']
+    category_id = req_data['category_id']
+    query = 'update Tasks set assigned_to = "%s", title = "%s", details = "%s", task_status ="%s", complete_by = "%s", created_by =  "%s", category_id = "%s" where task_id = "%s"' % (assigned_to, title, details, task_status, complete_by, created_by, category_id, task_id)
+    return put_request_db(query)
+
+
 
 # Deletes the given task
 @codey.route('/tasks/<task_id>', methods=['DELETE'])
@@ -244,3 +255,32 @@ def add_shopping_category():
     query = 'insert into ShoppingCategories (category_name) values ("%s")' % category_name
 
     return post_request_db(query)
+
+# Gets shopping items 
+@codey.route('/shoppingItems', methods=['GET'])
+def get_shopping_items():
+    query = 'select item_name, quantity, details, category_id, assigned_to from ShoppingItems Join Users on ShoppingItems.assigned_to = Users.user_id'
+    return get_request_db(query)
+
+# Creates a new shopping item
+@codey.route('/shoppingItems', methods=['POST'])
+def add_shopping_items():
+    req_data = request.get_json()
+
+    item_name = req_data['item_name']
+    quantity = req_data['quantity']
+    details = req_data['details']
+    category_id = req_data['category_id']
+    assigned_to = req_data['assigned_to']
+
+    query = 'insert into ShoppingItems (item_name, quantity, details, category_id, assigned_to) '
+    query += 'values ("%s", "%s", "%s", "%s", "%s")' % (item_name, quantity, details, category_id, assigned_to)
+    
+    return post_request_db(query)
+
+# Gets the assigned_to for shopping items
+@codey.route('/shoppingItems/<assigned_to>', methods=['GET'])
+def get_shopping_items_assigned_to_info(item_id):
+    query = 'select assigned_to, item_id from ShoppingItems where item_id = %s' % item_id
+    return get_request_db(query)
+
