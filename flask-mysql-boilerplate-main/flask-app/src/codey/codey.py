@@ -322,72 +322,72 @@ def get_shopping_categories():
     the_response.status_code = 200
     return the_response
 
-# Gets all shopping items from the DB
-@codey.route('/shopping_items', methods=['GET'])
-def get_shopping_items():
-    cursor = db.get_db().cursor()
-    cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingCategories where item_id = %s', item_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+# # Gets all shopping items from the DB
+# @codey.route('/shopping_items', methods=['GET'])
+# def get_shopping_items():
+#     cursor = db.get_db().cursor()
+#     cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingItems')
+#     row_headers = [x[0] for x in cursor.description]
+#     json_data = []
+#     theData = cursor.fetchall()
+#     for row in theData:
+#         json_data.append(dict(zip(row_headers, row)))
+#     the_response = make_response(jsonify(json_data))
+#     the_response.status_code = 200
+#     return the_response
 
-# Gets all shopping items from the DB
-@codey.route('/shopping_items', methods=['POST'])
-def post_shopping_items():
-    cursor = db.get_db().cursor()
-    cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingCategories where item_id = %s', item_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+# # Posts all shopping items from the DB
+# @codey.route('/shopping_items', methods=['POST'])
+# def post_shopping_items():
+#     cursor = db.get_db().cursor()
+#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
+#     row_headers = [x[0] for x in cursor.description]
+#     json_data = []
+#     theData = cursor.fetchall()
+#     for row in theData:
+#         json_data.append(dict(zip(row_headers, row)))
+#     the_response = make_response(jsonify(json_data))
+#     the_response.status_code = 200
+#     return the_response
 
-# Gets all shopping items from the DB
-@codey.route('/shopping_items', methods=['PUT'])
-def put_shopping_items():
-    cursor = db.get_db().cursor()
-    cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingCategories where item_id = %s', item_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+# # Puts all shopping items from the DB
+# @codey.route('/shopping_items', methods=['PUT'])
+# def put_shopping_items():
+#     cursor = db.get_db().cursor()
+#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
+#     row_headers = [x[0] for x in cursor.description]
+#     json_data = []
+#     theData = cursor.fetchall()
+#     for row in theData:
+#         json_data.append(dict(zip(row_headers, row)))
+#     the_response = make_response(jsonify(json_data))
+#     the_response.status_code = 200
+#     return the_response
 
-# Gets all shopping items from the DB
-@codey.route('/shopping_items', methods=['DELETE'])
-def delete_shopping_items():
-    cursor = db.get_db().cursor()
-    cursor.execute('select item_name, quantity, details, category_id, assigned_to, item_id from ShoppingCategories where item_id = %s', item_id)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+# # Deletes all shopping items from the DB
+# @codey.route('/shopping_items', methods=['DELETE'])
+# def delete_shopping_items():
+#     cursor = db.get_db().cursor()
+#     cursor.execute('select item_name, quantity, details, category_id, assigned_to from ShoppingItems')
+#     row_headers = [x[0] for x in cursor.description]
+#     json_data = []
+#     theData = cursor.fetchall()
+#     for row in theData:
+#         json_data.append(dict(zip(row_headers, row)))
+#     the_response = make_response(jsonify(json_data))
+#     the_response.status_code = 200
+#     return the_response
 
-# Gets all shopping items from the DB
-@codey.route('/shopping_items/<assigned_to>', methods=['GET'])
-def get_shopping_items_info():
-    cursor = db.get_db().cursor()
-    cursor.execute('select assigned_to from ShoppingItems')
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    return the_response
+# # Gets all shopping items, assigned_to, from the DB
+# @codey.route('/shopping_items/<assigned_to>', methods=['GET'])
+# def get_shopping_items_info():
+#     cursor = db.get_db().cursor()
+#     cursor.execute('select assigned_to from ShoppingItems where assigned_to = %s', assigned_to)
+#     row_headers = [x[0] for x in cursor.description]
+#     json_data = []
+#     theData = cursor.fetchall()
+#     for row in theData:
+#         json_data.append(dict(zip(row_headers, row)))
+#     the_response = make_response(jsonify(json_data))
+#     the_response.status_code = 200
+#     return the_response
