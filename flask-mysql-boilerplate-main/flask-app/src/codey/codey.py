@@ -156,8 +156,8 @@ def add_shopping_items():
 
 # Gets the assigned_to for shopping items
 @codey.route('/shoppingItems/<assigned_to>', methods=['GET'])
-def get_shopping_items_assigned_to_info(item_id):
-    query = 'select assigned_to, item_id from ShoppingItems where item_id = %s' % item_id
+def get_shopping_items_assigned_to_info(assigned_to):
+    query = 'select assigned_to, item_id, item_name, quantity, details, category_id from ShoppingItems where assigned_to = %s' % assigned_to
     return get_request_db(query)
 
 ### Shopping Categories Routes

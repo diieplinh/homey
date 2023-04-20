@@ -51,7 +51,9 @@ def put_request_db(stmt):
 # Gets information for all tasks from DB
 @emma.route('/tasks', methods=['GET'])
 def get_tasks_info():
-    query = 'select first_name, last_name, assigned_to, category_id, complete_by, title, details, task_status, task_id, created_by from Tasks Join Users on Tasks.assigned_to = Users.user_id'
+    query = 'select first_name, last_name, assigned_to, category_id, complete_by, title, details, '
+    query += 'task_status, task_id, created_by from Tasks Join Users on Tasks.assigned_to = Users.user_id '
+    query += 'order by complete_by asc'
     return get_request_db(query)
 
 # Creates a new task
@@ -72,10 +74,10 @@ def add_task():
     
     return post_request_db(query)
 
-# Gets information for the given task category from DB
+# Gets tasks in the given category
 @emma.route('/tasks/<category_id>', methods=['GET'])
-def get_task_category_info(task_id):
-    query = 'select category_id, task_id from Tasks where task_id= %s' % task_id
+def get_tasks_in_category(category_id):
+    query = 'select category_id, task_id from Tasks where category_id= %s' % category_id
     return get_request_db(query)
 
 
@@ -127,7 +129,7 @@ def add_task_category():
 # Gets all events from the DB
 @emma.route('/events', methods=['GET'])
 def get_events():
-    query = 'select title, details, scheduled, created_by, event_id from Events'
+    query = 'select title, details, scheduled, created_by, event_id from Events order by scheduled asc'
     return get_request_db(query)
 
 # Adds a new event to the DB
