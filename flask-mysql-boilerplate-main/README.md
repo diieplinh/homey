@@ -21,24 +21,25 @@ This repo contains a boilerplate setup for spinning up 3 Docker containers:
 - Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
 
 4. # Data Schema
-- users: contains information about the household members who use the app
-- tasks: contains information about the household members' tasks including datetime, who assigned it and to who
-- messages: contains information about the messages between the household members who use the app
-- shopping items: contains information about shopping items required by the household members
-- shopping categories: contains information about the shopping categories required by the household members
-- tasks categories: contains information about the tasks categories 
-- events: contains information about events concerning household members who use the app
-- payments: contains information about the payments between the household members who use the app
-- requests: contains information about the requests betweeen household members who use the app
-- payment categories: contains information about the payments categories between household members
-- event attendees: contains information about the household members who are attending the event
+- users: Information about household members using the app
+- tasks: Task details, including date, time, assignee, and assignor
+- messages: Message exchanges between household members using the app
+- shopping_items: Shopping items required by household members
+- shopping_categories: Shopping categories used by household members
+- tasks_categories: Task categories
+- events: Event information for household members using the app
+- payments: Payment information between household members using the app
+- requests: Request information between household members using the app
+- payment_categories: Payment categories between household members
+- event_attendees: Information about household members attending events
 
 5. # Usage
 To use the database, follow these steps:
 
-- Launch the application by running the app.py file using Python 3.
+- Launch the application by running the app.py file with Python 3.
 - Open a web browser and navigate to the URL http://localhost:8001.
-- You can access all the above on the homepage.
+- Access all features on the homepage.
+
 
 6. # Link to team video : 
 
