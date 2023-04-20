@@ -3,7 +3,7 @@
 # Project name: Homey
 
 # 1. Description of database
-Introducing Homey, the ultimate solution for managing shared living spaces with ease and grace. Our web-based application is designed to keep you and your roommates, housemates, or family in perfect harmony. Say goodbye to arguments about whose turn it is to clean the bathroom or pay the bills, and hello to a beautifully organized and connected household! With Homey, you can streamline your chores with our to-do list that comes with automated reminders, and a synced calendar that displays scheduled chores, outings, and bill payments. Plus, our shared shopping list makes it easy to decide on larger purchases as a group. But that's not all - Homey also offers smart financial tools for payment sharing, customizable budgeting, and detailed spending analytics to help you stay on top of your finances effortlessly. And our messaging platform is integrated with all of Homey's services, making it easy to communicate with your roommates, housemates, or family.
+Introducing Homey, the ultimate solution for managing shared living spaces with ease and grace. Our web-based application is designed to keep you and your roommates, housemates, or family in perfect harmony. Say goodbye to arguments about whose turn it is to clean the bathroom or pay the bills, and hello to a beautifully organized and connected household! With Homey, you can streamline your chores with our to-do list that comes with automated reminders, and a synced calendar that displays scheduled chores, outings, and other tasks or events. Plus, our shared shopping list makes it easy to manage purchases as a group. Our messaging platform is integrated with all of Homey's services, making it easy to communicate with your roommates, housemates, or family.
 
 # 2. Set up
 This repo contains a boilerplate setup for spinning up 3 Docker containers: 
@@ -28,9 +28,6 @@ This repo contains a boilerplate setup for spinning up 3 Docker containers:
 - shopping_categories: Shopping categories used by household members
 - tasks_categories: Task categories
 - events: Event information for household members using the app
-- payments: Payment information between household members using the app
-- requests: Request information between household members using the app
-- payment_categories: Payment categories between household members
 - event_attendees: Information about household members attending events
 
 # 4. Usage
