@@ -2,6 +2,9 @@ create database if not exists homey;
 
 use homey;
 
+grant all privileges on homey.* to 'webapp'@'%';
+flush privileges;
+
 drop table if exists EventAttendees;
 drop table if exists Events;
 drop table if exists Payments;
