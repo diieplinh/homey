@@ -117,7 +117,7 @@ def get_messages_between(user1, user2):
     
     return get_request_db(query)
 
-# Events Routes
+### Events Routes
 
 # Gets all events from the DB
 @codey.route('/events', methods=['GET'])
@@ -172,6 +172,23 @@ def get_tasks_info():
     query = 'select first_name, last_name, assigned_to, complete_by, title, details, task_status, task_id from Tasks Join Users on Tasks.assigned_to = Users.user_id'
     return get_request_db(query)
 
+# Creates a new task
+@codey.route('/tasks', methods=['POST'])
+def add_task():
+    req_data = request.get_json()
+
+    assigned_to = req_data['assigned_to']
+    title = req_data['title']
+    details = req_data['details']
+    task_status = req_data['task_status']
+    complete_by = req_data['complete_by']
+    created_by = req_data['created_by']
+
+    query = 'insert into Tasks (assigned_to, title, details, task_status, complete_by, created_by) '
+    query += 'values ("%s", "%s", "%s", "%s", "%s", "%s")' % (assigned_to, title, details, task_status, complete_by, created_by)
+    
+    return post_request_db(query)
+
 # Gets information for the given task category from DB
 @codey.route('/tasks/<category_id>', methods=['GET'])
 def get_task_category_info(task_id):
@@ -185,9 +202,9 @@ def get_task_assignee_info(task_id):
     query = 'select assigned_to, task_id from Tasks where task_id = %s' % task_id
     return get_request_db(query)
 
-# Creates a new task
-@codey.route('/tasks/<task_id>', methods=['POST'])
-def post_tasks_info(task_id):
+# Updates a task 
+@codey.route('/tasks/<task_id>', methods=['PUT'])
+def update_task(task_id):
     return
 
 # Deletes the given task
@@ -204,21 +221,26 @@ def get_task_categories():
     query = 'select category_name from TaskCategories'
     return get_request_db(query)
 
-# Creates a new task category
+# Adds a new task category
 @codey.route('/task_categories', methods=['POST'])
-def add_task_category(task_id):
+def add_task_category():
     req_data = request.get_json()
-    assigned_to = req_data['assigned_to']
-    title = req_data['title']
-    details = req_data['details']
-    task_status = req_data['task_status']
-    complete_by = req_data['complete_by']
-    query = 'update Task_categories set assigned_to = "%s", title = "%s", details = "%s", task_status = "%s", complete_by = "%s" where task_id = "%s"' % (assigned_to, title, details, task_status, complete_by, task_id)
-    
-    return put_request_db(query)
+    category_name = req_data['category_name']
+    query = 'insert into TaskCategories (category_name) values ("%s")' % category_name
+
+    return post_request_db(query)
 
 # Gets all shopping categories from the DB
 @codey.route('/shopping_categories', methods=['GET'])
 def get_shopping_categories():
     query = 'select category_name from ShoppingCategories'
     return get_request_db(query)
+
+# Adds a new shopping category 
+@codey.route('/shopping_categories', methods=['POST'])
+def add_shopping_category():
+    req_data = request.get_json()
+    category_name = req_data['category_name']
+    query = 'insert into ShoppingCategories (category_name) values ("%s")' % category_name
+
+    return post_request_db(query)
