@@ -98,6 +98,18 @@ def get_messages():
     query = 'select * from Messages'
     return get_request_db(query)
 
+# Creates a new message
+@codey.route('/messages', methods=['POST'])
+def add_message():
+    req_data = request.get_json()
+    sender_id = req_data["sender_id"]
+    recipient_id = req_data["recipient_id"]
+    content = req_data["content"]
+
+    query = 'INSERT INTO Messages (sender_id, recipient_id, content) VALUES ("%s", "%s", "%s")' % (sender_id, recipient_id, content)
+
+    return post_request_db(query)
+
 # Gets the all messages sent to a user
 @codey.route('/messages/<recipient_id>', methods=['GET'])
 def get_messages_received_by(recipient_id):
@@ -107,13 +119,14 @@ def get_messages_received_by(recipient_id):
 # Gets the all messages sent between two users
 @codey.route('/messages/<user1>/<user2>', methods=['GET'])
 def get_messages_between(user1, user2):
-    query = 'select sender_id, recipient_id, content, sent_at, message_id '
+    query = 'select sender_id, recipient_id, content, sent_at, message_id, user_id, first_name, last_name '
     query += 'from Messages '
+    query += 'join Users on sender_id = user_id '
     query += 'where (sender_id = "' + user1 + \
         '" && recipient_id = "' + user2 + '") '
     query += '|| (sender_id = "' + user2 + \
         '" && recipient_id = "' + user1 + '") '
-    query += 'order by sent_at asc;'
+    query += 'order by sent_at desc;'
     
     return get_request_db(query)
 
@@ -183,9 +196,10 @@ def add_task():
     task_status = req_data['task_status']
     complete_by = req_data['complete_by']
     created_by = req_data['created_by']
+    category_id = req_data['category_id']
 
-    query = 'insert into Tasks (assigned_to, title, details, task_status, complete_by, created_by) '
-    query += 'values ("%s", "%s", "%s", "%s", "%s", "%s")' % (assigned_to, title, details, task_status, complete_by, created_by)
+    query = 'insert into Tasks (assigned_to, title, details, task_status, complete_by, created_by, category_id) '
+    query += 'values ("%s", "%s", "%s", "%s", "%s", "%s", "%s")' % (assigned_to, title, details, task_status, complete_by, created_by, category_id)
     
     return post_request_db(query)
 
@@ -221,7 +235,7 @@ def update_task(task_id):
 # Deletes the given task
 @codey.route('/tasks/<task_id>', methods=['DELETE'])
 def del_tasks_info(task_id):
-    query = 'select assigned_to, complete_by, title, details, task_status, task_id from Tasks where task_id = %s' % task_id
+    query = 'delete from Tasks where task_id = %s' % task_id
     return del_request_db(query)
 
 ### Task Categories Routes
@@ -229,7 +243,7 @@ def del_tasks_info(task_id):
 # Gets all task categories from the DB
 @codey.route('/task_categories', methods=['GET'])
 def get_task_categories():
-    query = 'select category_name from TaskCategories'
+    query = 'select category_name, category_id from TaskCategories'
     return get_request_db(query)
 
 # Adds a new task category
@@ -244,7 +258,7 @@ def add_task_category():
 # Gets all shopping categories from the DB
 @codey.route('/shopping_categories', methods=['GET'])
 def get_shopping_categories():
-    query = 'select category_name from ShoppingCategories'
+    query = 'select category_name, category_id from ShoppingCategories'
     return get_request_db(query)
 
 # Adds a new shopping category 
@@ -259,7 +273,7 @@ def add_shopping_category():
 # Gets shopping items 
 @codey.route('/shoppingItems', methods=['GET'])
 def get_shopping_items():
-    query = 'select item_name, quantity, details, category_id, assigned_to from ShoppingItems Join Users on ShoppingItems.assigned_to = Users.user_id'
+    query = 'select first_name, last_name, item_name, quantity, details, category_id, assigned_to from ShoppingItems Join Users on ShoppingItems.assigned_to = Users.user_id'
     return get_request_db(query)
 
 # Creates a new shopping item
